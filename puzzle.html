@@ -1,29 +1,169 @@
-e === index) {
-      pieces[index].classList.remove("selected");
-      selectedPiece = null;
-      return;
-    }
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Пазл</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #ffe6f0;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+  }
+  h1 { color: #d6336c; }
+  .info { color: #666; font-size: 16px; margin: 10px; }
+  #puzzle {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 4px;
+    width: 320px;
+    margin: 20px auto;
+    background: white;
+    padding: 8px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  .piece {
+    width: 100px;
+    height: 100px;
+    background-size: 300% 300%;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+  }
+  .piece:hover { border-color: #ffb3cc; }
+  .piece.selected {
+    border: 3px solid #d6336c;
+  }
+  #status {
+    font-size: 20px;
+    color: #d6336c;
+    font-weight: bold;
+    min-height: 30px;
+    margin: 15px;
+  }
+  #counter {
+    color: #888;
+    font-size: 15px;
+    margin: 5px;
+  }
+  button {
+    padding: 12px 26px;
+    font-size: 16px;
+    background: white;
+    color: #d6336c;
+    border: 2px solid #d6336c;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: inherit;
+    margin-top: 10px;
+  }
+  button:hover { background: #d6336c; color: white; }
+</style>
+</head>
+<body>
+  <h1>Пазл из нашего фото</h1>
+  <p class="info">Нажми на одну часть, потом на другую — они поменяются местами.</p>
 
-    // Меняем местами
-    [puzzleState[selectedPiece], puzzleState[index]] =
-    [puzzleState[index], puzzleState[selectedPiece]];
+  <div id="puzzle"></div>
+  <div id="status"></div>
+  <div id="counter"></div>
+  <button onclick="initPuzzle()">Перемешать заново</button>
 
-    moves++;
-    selectedPiece = null;
-    renderPuzzle();
-    document.getElementById("counter").innerText = "Ходов: " + moves;
-    checkPuzzle();
+<script>
+  var IMAGE = "photo1.jpg";
+  var selected = null;
+  var state = [0,1,2,3,4,5,6,7,8];
+  var moves = 0;
+
+  function initPuzzle() {
+    selected = null;
+    moves = 0;
+    document.getElementById("status").innerText = "";
+    document.getElementById("counter").innerText = "";
+
+    state = [0,1,2,3,4,5,6,7,8];
+
+    // Перемешиваем
+    do {
+      for (var i = state.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = state[i];
+        state[i] = state[j];
+        state[j] = t;
+      }
+    } while (isSolved());
+
+    draw();
   }
 
-  function checkPuzzle() {
-    const solved = puzzleState.every((val, i) => val === i);
-    if (solved) {
-      document.getElementById("status").innerText =
-        "🎉 Собрал! Ты умничка. Ходов: " + moves + " 💕";
+  function draw() {
+    var puzzle = document.getElementById("puzzle");
+    puzzle.innerHTML = "";
+
+    for (var i = 0; i < 9; i++) {
+      var pieceNum = state[i];
+      var piece = document.createElement("div");
+      piece.className = "piece";
+
+      var row = Math.floor(pieceNum / 3);
+      var col = pieceNum % 3;
+      var bgX = col * 50;  // 0%, 50%, 100%
+      var bgY = row * 50;
+
+      piece.style.backgroundImage = "url('" + IMAGE + "')";
+      piece.style.backgroundPosition = bgX + "% " + bgY + "%";
+
+      piece.setAttribute("data-index", i);
+      piece.onclick = makeClick(i);
+
+      puzzle.appendChild(piece);
     }
+  }
+
+  function makeClick(index) {
+    return function() {
+      var pieces = document.querySelectorAll(".piece");
+
+      if (selected === null) {
+        selected = index;
+        pieces[index].classList.add("selected");
+        return;
+      }
+
+      if (selected === index) {
+        pieces[index].classList.remove("selected");
+        selected = null;
+        return;
+      }
+
+      var tmp = state[selected];
+      state[selected] = state[index];
+      state[index] = tmp;
+
+      moves = moves + 1;
+      selected = null;
+      draw();
+      document.getElementById("counter").innerText = "Ходов: " + moves;
+
+      if (isSolved()) {
+        document.getElementById("status").innerText =
+          "Собрал! Ходов: " + moves;
+      }
+    };
+  }
+
+  function isSolved() {
+    for (var i = 0; i < 9; i++) {
+      if (state[i] !== i) return false;
+    }
+    return true;
   }
 
   initPuzzle();
 </script>
 </body>
-</html>(selectedPiec
+</html>
