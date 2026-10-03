@@ -2,80 +2,167 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Сердечки</title>
+<title>Лови сердечки</title>
 <style>
-  body { font-family: Arial; background: #ffe6f0; text-align: center; padding: 20px; }
-  #area {
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #e6f0ff, #ffe6f0);
+    padding: 30px;
+    color: #333;
+    text-align: center;
+    min-height: 100vh;
+  }
+  nav a {
+    margin: 0 10px;
+    color: #d6336c;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  h1 { color: #d6336c; }
+  .info { max-width: 500px; margin: 15px auto; font-size: 17px; color: #666; }
+  #gameArea {
     position: relative;
-    width: 600px; height: 400px;
-    max-width: 95vw;
+    width: 100%;
+    max-width: 600px;
+    height: 500px;
     margin: 20px auto;
     background: white;
-    border: 2px solid #d6336c;
-    border-radius: 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     overflow: hidden;
   }
-  .heart { position: absolute; font-size: 36px; cursor: pointer; user-select: none; }
-  button { padding: 12px 28px; font-size: 18px; background: #d6336c; color: white; border: none; border-radius: 10px; cursor: pointer; }
-  #score { font-size: 22px; color: #d6336c; margin: 15px; font-weight: bold; }
+  .heart {
+    position: absolute;
+    font-size: 55px;
+    user-select: none;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .score-box {
+    font-size: 22px;
+    color: #d6336c;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  .btn {
+    background: #d6336c;
+    color: white;
+    border: none;
+    padding: 14px 30px;
+    font-size: 17px;
+    font-family: inherit;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 </style>
 </head>
 <body>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="quiz.html">Викторина</a>
+    <a href="anniversary.html">Годовщина</a>
+    <a href="fun.html">Развлечения</a>
+  </nav>
+
   <h1>Лови сердечки</h1>
-  <button id="btn" onclick="start()">Начать игру</button>
-  <div id="score">Счёт: 0</div>
-  <div id="area"></div>
+  <p class="info">Нажимай на сердечки, пока они летят вниз. У тебя 15 секунд!</p>
+
+  <button class="btn" id="startBtn" onclick="startGame()">Начать игру</button>
+  <div class="score-box" id="score">Счёт: 0</div>
+  <div id="gameArea"></div>
+  <div class="info" id="result"></div>
 
 <script>
   var score = 0;
   var running = false;
-  var spawnInt, timeInt, timeLeft = 15;
+  var spawnInt = null;
+  var timerInt = null;
+  var timeLeft = 15;
 
-  function start() {
+  function startGame() {
     score = 0;
     timeLeft = 15;
     running = true;
     document.getElementById("score").innerText = "Счёт: 0 | Осталось: 15";
-    document.getElementById("btn").disabled = true;
-    document.getElementById("btn").innerText = "Игра...";
-    document.getElementById("area").innerHTML = "";
+    document.getElementById("result").innerText = "";
+    document.getElementById("startBtn").disabled = true;
+    document.getElementById("startBtn").innerText = "Игра идёт...";
+    document.getElementById("gameArea").innerHTML = "";
+
+    if (spawnInt) clearInterval(spawnInt);
+    if (timerInt) clearInterval(timerInt);
 
     spawnInt = setInterval(function() {
-      if (running) spawn();
-    }, 600);
+      if (running) spawnHeart();
+    }, 500);
 
-    timeInt = setInterval(function() {
+    timerInt = setInterval(function() {
       timeLeft--;
-      document.getElementById("score").innerText = "Счёт: " + score + " | Осталось: " + timeLeft;
-      if (timeLeft <= 0) stop();
+      document.getElementById("score").innerText =
+        "Счёт: " + score + " | Осталось: " + timeLeft;
+      if (timeLeft <= 0) endGame();
     }, 1000);
   }
 
-  function spawn() {
-    var area = document.getElementById("area");
-    var h = document.createElement("div");
-    h.className = "heart";
-    h.innerText = "❤️";
-    h.style.left = Math.random() * (area.clientWidth - 40) + "px";
-    h.style.top = "-40px";
-    h.onclick = function() {
+  function spawnHeart() {
+    var area = document.getElementById("gameArea");
+    var heart = document.createElement("div");
+    heart.className = "heart";
+    var hearts = ["❤️", "💕", "💖", "💗", "🩷"];
+    heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+
+    var size = 55;
+    heart.style.left = Math.random() * (area.clientWidth - size) + "px";
+    heart.style.top = "-60px";
+
+    // Плавное падение
+    var duration = 4500;
+    var startTime = performance.now();
+    var startTop = -60;
+    var endTop = area.clientHeight;
+
+    function animate(now) {
+      if (!heart.parentNode) return;
+      var progress = (now - startTime) / duration;
+      if (progress >= 1) {
+        heart.remove();
+        return;
+      }
+      heart.style.top = (startTop + (endTop - startTop) * progress) + "px";
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+    heart.onclick = function() {
       score++;
-      document.getElementById("score").innerText = "Счёт: " + score + " | Осталось: " + timeLeft;
-      h.remove();
+      heart.innerText = "💥";
+      setTimeout(function() { heart.remove(); }, 150);
     };
-    area.appendChild(h);
-    setTimeout(function() { if (h.parentNode) h.remove(); }, 3000);
+
+    area.appendChild(heart);
   }
 
-  function stop() {
+  function endGame() {
     running = false;
     clearInterval(spawnInt);
-    clearInterval(timeInt);
-    document.getElementById("btn").disabled = false;
-    document.getElementById("btn").innerText = "Играть снова";
-    document.getElementById("area").innerHTML = "";
-    alert("Игра окончена! Счёт: " + score);
+    clearInterval(timerInt);
+    document.getElementById("startBtn").disabled = false;
+    document.getElementById("startBtn").innerText = "Играть снова";
+    document.getElementById("gameArea").innerHTML = "";
+
+    var comment = "";
+    if (score >= 25) comment = "Ты снайпер!";
+    else if (score >= 15) comment =тличный результат!";
+    else if (score >= 8) comment = "Хорошо, но можно лучше.";
+    else comment = "Попробуй ещё!";
+
+    document.getElementById("result").innerHTML =
+      "Игра окончена! Поймал <b>" + score + "</b> сердечек.
+" 
+mment;
   }
 </script>
 </body>
-</html>
+</html>"О
