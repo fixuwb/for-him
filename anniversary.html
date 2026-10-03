@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>С годовщиной ❤️</title>
+<style>
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ffe6f0, #e6f0ff);
+    text-align: center;
+    padding: 30px;
+    color: #333;
+    overflow-x: hidden;
+  }
+  nav a {
+    margin: 0 12px;
+    color: #d6336c;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  nav a:hover { text-decoration: underline; }
+  h1 { color: #d6336c; font-size: 32px; }
+  .date {
+    font-size: 22px;
+    color: #d6336c;
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  .message {
+    max-width: 600px;
+    margin: 25px auto;
+    font-size: 18px;
+    line-height: 1.7;
+  }
+  .moon-card {
+    background: white;
+    max-width: 500px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  }
+  .moon-card img {
+    width: 350px;
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .moon-caption {
+    font-size: 15px;
+    color: #666;
+    margin-top: 15px;
+    line-height: 1.6;
+  }
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    top: -10px;
+    z-index: 999;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="quiz.html">Викторина</a>
+    <a href="anniversary.html">Годовщина</a>
+  </nav>
+
+  <h1>С нашей годовщиной! 🎉</h1>
+  <p class="date" id="annivDate"></p>
+
+  <p class="message">
+    Сегодня особенный день — день, когда мы стали «мы».<b
+
+   Даже если сейчас между нами километры, моё сердце рядом с тобой.
+    Этот сайт — маленькое напоминание, что я думаю о тебе каждый день.
+    Спасибо, что ты есть. Я люблю тебя ❤️
+  </p>
+
+  <div class="moon-card">
+    <img src="photo5.jpg" alt="Мы с тобой 🐈">
+    <p class="moon-caption">
+      🐈 Мы — два пушина, которые нашли друг друга.
+
+  Дана и Саша. 04.10.2025. Навсегда 💕
+    </p>
+  </div>
+
+<script>
+  // 👇 ВАША ДАТА 👇
+  const ourDate = new Date("2025-10-04");
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById("annivDate").innerText =
+    "Наша дата: " + ourDate.toLocaleDateString('ru-RU', options);
+
+  // 🎉 Анимация хлопушки
+  function createConfetti() {
+    const colors = ['#ff6b9d', '#ffd93d', '#6bcbff', '#ff8c42', '#b56bff', '#ff4757'];
+    for (let i = 0; i < 80; i++) {
+      const conf = document.createElement('div');
+      conf.className = 'confetti';
+      conf.style.left = Math.random() * 100 + 'vw';
+      conf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      conf.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      conf.style.animationDelay = (Math.random() * 0.5) + 's';
+      conf.style.width = (Math.random() * 8 + 6) + 'px';
+      conf.style.height = conf.style.width;
+      conf.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+      document.body.appendChild(conf);
+      setTimeout(() => conf.remove(), 5000);
+    }
+  }
+
+  window.addEventListener('load', () => {
+    createConfetti();
+    setTimeout(createConfetti, 1500);
+  });
+</script>
+</body>
+</html>

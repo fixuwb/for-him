@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Для тебя ❤️</title>
+<style>
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ffe6f0, #e6f0ff);
+    text-align: center;
+    padding: 40px;
+    color: #333;
+  }
+  h1 { color: #d6336c; }
+  nav a {
+    margin: 0 12px;
+    color: #d6336c;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  nav a:hover { text-decoration: underline; }
+  .photo {
+    width: 260px;
+    border-radius: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  .message {
+    max-width: 600px;
+    margin: 30px auto;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  .countdown {
+    font-size: 26px;
+    color: #d6336c;
+    font-weight: bold;
+    margin: 30px;
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="quiz.html">Викторина</a>
+    <a href="anniversary.html">Годовщина</a>
+  </nav>
+
+  <h1>Привет, любимый ❤️</h1>
+
+  <p class="message">
+    Я сделала этот сайт, чтобы ты знал: я всегда рядом, даже на расстоянии.
+    Служи спокойно — я жду тебя и верю в тебя. Каждый день думаю о тебе.
+  </p>
+
+  <img src="photo1.jpg" class="photo">
+  <img src="photo2.jpg" class="photo">
+  <img src="photo3.jpg" class="photo">
+  <img src="photo4.jpg" class="photo">
+  <div class="countdown" id="countdown"></div>
+
+  <p class="message">
+    Я тебя очень люблю. Возвращайся скорее 💌
+  </p>
+
+<script>
+  const returnDate = new Date("2027-10-08").getTime();
+  setInterval(() => {
+    const now = new Date().getTime();
+    const diff = returnDate - now;
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
+    document.getElementById("countdown").innerHTML =
+      "До встречи осталось: " + days + " дней, " + hours + " ч, " + minutes + " мин";
+  }, 1000);
+</script>
+</body>
+</html>
