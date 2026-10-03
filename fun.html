@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Развлечения 💕</title>
+<style>
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ffe6f0, #e6f0ff);
+    padding: 30px;
+    color: #333;
+    text-align: center;
+    min-height: 100vh;
+  }
+  nav a {
+    margin: 0 10px;
+    color: #d6336c;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  nav a:hover { text-decoration: underline; }
+  h1 { color: #d6336c; }
+  .subtitle {
+    max-width: 500px;
+    margin: 15px auto 30px;
+    font-size: 17px;
+    color: #666;
+  }
+  .cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .card {
+    background: white;
+    width: 220px;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    text-decoration: none;
+    color: #333;
+    transition: 0.25s;
+  }
+  .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(214,51,108,0.25);
+  }
+  .card .emoji { font-size: 50px; display: block; margin-bottom: 15px; }
+  .card .title {
+    font-size: 19px;
+    font-weight: bold;
+    color: #d6336c;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .card .desc { font-size: 14px; color: #777; }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="quiz.html">Викторина</a>
+    <a href="anniversary.html">Годовщина</a>
+    <a href="plans.html">Планы</a>
+    <a href="fun.html">Развлечения</a>
+  </nav>
+
+  <h1>Развлечения 💕</h1>
+  <p class="subtitle">Тут можно отвлечься, улыбнуться и вспомнить, что я рядом.</p>
+
+  <div class="cards">
+    <a href="hug.html" class="card">
+      <span class="emoji">🤗</span>
+      <span class="title">Обнять меня</span>
+      <span class="desc">Виртуальный обнимашка, если грустно</span>
+    </a>
+    <a href="game.html" class="card">
+      <span class="emoji">🩷</span>
+      <span class="title">Лови сердечки</span>
+      <span class="desc">Мини-игра на 15 секунд</span>
+    </a>
+    <a href="puzzle.html" class="card">
+      <span class="emoji">🧩</span>
+      <span class="title">Пазл</span>
+      <span class="desc">Собери наше фото из 9 частей</span>
+    </a>
+  </div>
+</body>
+</html>

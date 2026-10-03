@@ -1,0 +1,29 @@
+e === index) {
+      pieces[index].classList.remove("selected");
+      selectedPiece = null;
+      return;
+    }
+
+    // Меняем местами
+    [puzzleState[selectedPiece], puzzleState[index]] =
+    [puzzleState[index], puzzleState[selectedPiece]];
+
+    moves++;
+    selectedPiece = null;
+    renderPuzzle();
+    document.getElementById("counter").innerText = "Ходов: " + moves;
+    checkPuzzle();
+  }
+
+  function checkPuzzle() {
+    const solved = puzzleState.every((val, i) => val === i);
+    if (solved) {
+      document.getElementById("status").innerText =
+        "🎉 Собрал! Ты умничка. Ходов: " + moves + " 💕";
+    }
+  }
+
+  initPuzzle();
+</script>
+</body>
+</html>(selectedPiec

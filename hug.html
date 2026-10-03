@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Обнять меня 🤗</title>
+<style>
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ffe6f0, #e6f0ff);
+    padding: 30px;
+    color: #333;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  nav {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+  nav a {
+    margin: 0 10px;
+    color: #d6336c;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+  }
+  nav a:hover { text-decoration: underline; }
+  h1 { color: #d6336c; }
+  p.subtitle {
+    max-width: 500px;
+    margin: 10px auto 30px;
+    font-size: 17px;
+    color: #666;
+  }
+  .hug-btn {
+    background: #d6336c;
+    color: white;
+    border: none;
+    padding: 20px 45px;
+    font-size: 22px;
+    font-family: inherit;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(214, 51, 108, 0.4);
+    transition: 0.2s;
+  }
+  .hug-btn:hover { transform: scale(1.07); }
+  #hugMessage {
+    font-size: 20px;
+    color: #d6336c;
+    margin-top: 25px;
+    min-height: 30px;
+    font-weight: bold;
+    max-width: 500px;
+  }
+  .hug-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 230, 240, 0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+    pointer-events: none;
+    padding: 20px;
+    text-align: center;
+  }
+  .hug-overlay .emoji {
+    font-size: 130px;
+    animation: pulse 1s infinite;
+  }
+  .hug-overlay .text {
+    font-size: 24px;
+    color: #d6336c;
+    font-weight: bold;
+    max-width: 400px;
+    line-height: 1.4;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Главная</a>
+    <a href="quiz.html">Викторина</a>
+    <a href="anniversary.html">Годовщина</a>
+    <a href="plans.html">Планы</a>
+    <a href="fun.html">Развлечения</a>
+  </nav>
+
+  <h1>🤗 Обнять меня</h1>
+  <p class="subtitle">Если вдруг загрустил, соскучился или просто хочешь тепла — жми кнопку.</p>
+
+  <button class="hug-btn" onclick="hugMe()">Обнять</button>
+  <div id="hugMessage"></div>
+
+<script>
+  const hugMessages = [
+    "Обнимаю тебя крепко-крепко",
+    "Ты самый лучший",
+    "Жду тебя 💋 Безумно хочу обнять ",
+    "Мы со всем справимся ❤️",
+    "Люблю тебя , солнышко! ",
+    "Скучаю. Очень. Каждый день 💌",
+    "Ты моя самая большая гордость ✨",
+    "Закрой глаза. Чувствуешь? Это я тебя обнимаю , мой масик  🩷"
+  ];
+
+  function hugMe() {
+    const msg = hugMessages[Math.floor(Math.random() * hugMessages.length)];
+    document.getElementById("hugMessage").innerText = msg;
+
+    const overlay = document.createElement("div");
+    overlay.className = "hug-overlay";
+    overlay.innerHTML = `
+      <div class="emoji">🤗</div>
+      <div class="text">${msg}</div>
+    `;
+    document.body.appendChild(overlay);
+
+    setTimeout(() => overlay.remove(), 2800);
+  }
+</script>
+</body>
+</html>
